@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -30,21 +32,23 @@ const Signup = () => {
         },
         body: JSON.stringify(user),
       });
+      const res_data = await res.json();
+      // console.log(res_data);
       if (res.ok) {
-        const res_data = await res.json();
-        console.log(res_data);
         storeTokenInLS(res_data.token);
-        alert("Registration Successful");
+        toast.success("Registration Successful");
         setUser({
           username: "",
           email: "",
           phone: "",
           password: "",
         });
-        navigate("/login");
+        navigate("/");
       } else {
         // Error handling for non-ok responses
-        const errorData = await res.json();
+        toast.error(
+          res_data.extraDetails ? res_data.extraDetails : res_data.message
+        );
         console.error("Registration Error:", errorData);
       }
     } catch (error) {

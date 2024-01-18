@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -28,11 +30,11 @@ const Login = () => {
         },
         body: JSON.stringify(user),
       });
+      const res_data = await res.json();
+      // console.log("login", res_data);
       if (res.ok) {
-        const res_data = await res.json();
-        console.log("login", res_data);
         storeTokenInLS(res_data.token);
-        alert("Login Successful");
+        toast.success("Login Successful");
         setUser({
           email: "",
           password: "",
@@ -40,7 +42,7 @@ const Login = () => {
         navigate("/");
       } else {
         // Error handling for non-ok responses
-        const errorData = await res.json();
+        toast.error(res_data.extraDetails ? res_data.extraDetails : res_data.message);
         console.error("Login Error:", errorData);
       }
     } catch (error) {
@@ -68,7 +70,7 @@ const Login = () => {
                 <br />
                 <form onSubmit={handleSubmit} method="POST">
                   <div>
-                    <label htmlFor="email">username</label>
+                    <label htmlFor="email">email</label>
                     <input
                       type="text"
                       name="email"

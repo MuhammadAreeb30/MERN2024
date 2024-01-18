@@ -6,6 +6,7 @@ const authRouter = require("./router/auth-router");
 const connectDB = require("./utils/db");
 const errorMiddleware = require("./middleware/error-middleware");
 const contactRouter = require("./router/contact-router");
+const serviceRouter = require("./router/service-router")
 
 // middleware
 const corsOption = {
@@ -20,6 +21,7 @@ app.use(express.json());
 // router
 app.use("/api/auth", authRouter);
 app.use("/api/form", contactRouter);
+app.use("/api/data", serviceRouter)
 app.use(errorMiddleware);
 
 const PORT = 5000;

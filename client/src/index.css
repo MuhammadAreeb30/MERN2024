@@ -77,6 +77,12 @@ li {
     grid-template-columns: repeat(4, 1fr);
 }
 
+.toastBody{
+    font-family: 'Urbanist', sans-serif;
+    color: #000;
+    font-size: 1.7rem;   
+}
+
 /*? Module Rules / Reusable */
 button {
     text-transform: capitalize;

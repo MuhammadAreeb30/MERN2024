@@ -41,7 +41,7 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     const userExist = await User.findOne({ email });
     if (!userExist) {
-      res.status(400).json({ error: "Invalid Credentials" });
+      res.status(400).json({ message: "Invalid Credentials" });
     }
     const user = await userExist.comparePassword(password);
     if (user) {
@@ -51,11 +51,23 @@ const login = async (req, res) => {
         user_ID: userExist._id.toString(),
       });
     } else {
-      res.status(400).json({ error: "Invalid Email or Password" });
+      res.status(400).json({ message: "Invalid Email or Password" });
     }
   } catch (error) {
     res.status(500).json({ error: "internal server error" });
   }
 };
 
-module.exports = { home, register, login };
+// *----------
+// User Logic
+// *----------
+const user = async (req, res) => {
+  try {
+    const userData = req.user;
+    res.status(200).json({ userData });
+  } catch (error) {
+    console.log(`error from the user route ${error}`);
+  }
+};
+
+module.exports = { home, register, login, user };

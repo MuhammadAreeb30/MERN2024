@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useAuth } from "../store/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Contact = () => {
   const [contact, setContact] = useState({
@@ -7,14 +10,48 @@ const Contact = () => {
     message: "",
   });
 
+  const [userData, setUserData] = useState(true);
+
+  const { user } = useAuth();
+
+  if (userData && user) {
+    setContact({
+      username: user.username,
+      email: user.email,
+      message: "",
+    });
+    setUserData(false);
+  }
+
   const handleInput = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     setContact({ ...contact, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:5000/api/form/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contact),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success("Your Message Send Successfully");
+        setContact({
+          username: user.username,
+          email: user.email,
+          message: "",
+        });
+      }
+    } catch (error) {
+      toast.error("Message Not Send");
+      console.error(`Error from the contact ${error}`);
+    }
   };
 
   return (
@@ -28,7 +65,7 @@ const Contact = () => {
             <img src="./images/support.png" alt="contact img" />
           </div>
           <section className="section-form">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} method="POST">
               <div>
                 <label htmlFor="username">username</label>
                 <input

@@ -6,7 +6,8 @@ const authRouter = require("./router/auth-router");
 const connectDB = require("./utils/db");
 const errorMiddleware = require("./middleware/error-middleware");
 const contactRouter = require("./router/contact-router");
-const serviceRouter = require("./router/service-router")
+const serviceRouter = require("./router/service-router");
+const adminRoute = require("./router/admin-router");
 
 // middleware
 const corsOption = {
@@ -21,8 +22,11 @@ app.use(express.json());
 // router
 app.use("/api/auth", authRouter);
 app.use("/api/form", contactRouter);
-app.use("/api/data", serviceRouter)
+app.use("/api/data", serviceRouter);
 app.use(errorMiddleware);
+
+// define admin route
+app.use("/api/admin", adminRoute);
 
 const PORT = 5000;
 

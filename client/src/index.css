@@ -77,13 +77,14 @@ li {
     grid-template-columns: repeat(4, 1fr);
 }
 
-.toastBody{
+.toastBody {
     font-family: 'Urbanist', sans-serif;
     color: #000;
-    font-size: 1.7rem;   
+    font-size: 1.7rem;
 }
 
 /*? Module Rules / Reusable */
+.btn,
 button {
     text-transform: capitalize;
     padding: 1rem 2.2rem;
@@ -104,9 +105,12 @@ button {
     -ms-transition: border-color 0.3s;
     -o-transition: border-color 0.3s;
 }
-
+.btn:hover,
 button:hover {
     box-shadow: inset 0 0 0 0.2rem var(--bg-color);
+}
+.btn{
+    color: #fff;
 }
 
 a:hover,
